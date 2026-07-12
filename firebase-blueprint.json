@@ -1,0 +1,131 @@
+{
+  "entities": {
+    "Listing": {
+      "title": "Listing",
+      "description": "Marketplace listing for cows",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "breed": { "type": "string" },
+        "age": { "type": "string" },
+        "location": { "type": "string" },
+        "type": { "type": "string", "enum": ["adopt", "sell"] },
+        "price": { "type": "number" },
+        "description": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "sellerName": { "type": "string" },
+        "contactNumber": { "type": "string" },
+        "postedAt": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "milkingStatus": { "type": "string", "enum": ["milking", "non-milking", "calf"] }
+      },
+      "required": ["userId", "title", "breed", "age", "location", "type", "description", "sellerName", "contactNumber", "postedAt", "verified", "milkingStatus"]
+    },
+    "Gaushala": {
+      "title": "Gaushala",
+      "description": "Directory of cow shelters",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "location": { "type": "string" },
+        "capacity": { "type": "string" },
+        "description": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "imageUrl": { "type": "string" },
+        "contactNumber": { "type": "string" },
+        "needsSponsorship": { "type": "boolean" },
+        "monthlySponsorshipCost": { "type": "number" }
+      },
+      "required": ["userId", "name", "location", "capacity", "description", "verified", "contactNumber", "needsSponsorship"]
+    },
+    "EmergencyAlert": {
+      "title": "Emergency Alert",
+      "description": "SOS emergency alerts",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "type": { "type": "string", "enum": ["injured", "abandoned", "smuggling"] },
+        "location": { "type": "string" },
+        "description": { "type": "string" },
+        "urgency": { "type": "string", "enum": ["high", "critical"] },
+        "status": { "type": "string", "enum": ["active", "resolved"] },
+        "postedAt": { "type": "string" }
+      },
+      "required": ["userId", "type", "location", "description", "urgency", "status", "postedAt"]
+    },
+    "TransportService": {
+      "title": "Transport Service",
+      "description": "Directory of transport services",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "vehicleType": { "type": "string" },
+        "location": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "contactNumber": { "type": "string" }
+      },
+      "required": ["userId", "name", "vehicleType", "location", "verified", "contactNumber"]
+    },
+    "VetService": {
+      "title": "Vet Service",
+      "description": "Directory of vet services",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "specialization": { "type": "string" },
+        "location": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "contactNumber": { "type": "string" },
+        "experience": { "type": "string" }
+      },
+      "required": ["userId", "name", "specialization", "location", "verified", "contactNumber", "experience"]
+    },
+    "Sponsorship": {
+      "title": "Sponsorship",
+      "description": "Sponsorships and Gau-Daan payments registered to Gaushalas",
+      "type": "object",
+      "properties": {
+        "gaushalaId": { "type": "string" },
+        "gaushalaName": { "type": "string" },
+        "donorName": { "type": "string" },
+        "donorPhone": { "type": "string" },
+        "amount": { "type": "number" },
+        "paymentMethod": { "type": "string", "enum": ["upi", "bank"] },
+        "referenceNo": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "verified"] },
+        "submittedAt": { "type": "string" }
+      },
+      "required": ["gaushalaId", "gaushalaName", "donorName", "donorPhone", "amount", "paymentMethod", "referenceNo", "status", "submittedAt"]
+    }
+  },
+  "firestore": {
+    "listings/{listingId}": {
+      "schema": { "$ref": "Listing" },
+      "description": "Marketplace listings"
+    },
+    "gaushalas/{gaushalaId}": {
+      "schema": { "$ref": "Gaushala" },
+      "description": "Registered gaushalas"
+    },
+    "alerts/{alertId}": {
+       "schema": { "$ref": "EmergencyAlert" },
+       "description": "Emergency alerts"
+    },
+    "transports/{transportId}": {
+       "schema": { "$ref": "TransportService" },
+       "description": "Transport services"
+    },
+    "vets/{vetId}": {
+       "schema": { "$ref": "VetService" },
+       "description": "Vet services"
+    },
+    "sponsorships/{sponsorshipId}": {
+       "schema": { "$ref": "Sponsorship" },
+       "description": "Registered sponsorships"
+    }
+  }
+}

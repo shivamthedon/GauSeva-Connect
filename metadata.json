@@ -1,0 +1,6 @@
+{
+  "name": "GauSeva Connect Marketplace",
+  "description": "A marketplace platform connecting sellers with Gaurakshaks and verified buyers for cow adoption and protection.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

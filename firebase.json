@@ -1,0 +1,21 @@
+{
+  "auth": {
+    "providers": {
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "GauSeva Connect",
+        "supportEmail": "iamshivammsharmaa@gmail.com",
+        "authorizedRedirectUris": [
+          "http://localhost",
+          "https://gauseva-connect-87e8d.firebaseapp.com",
+          "https://gauseva-connect-87e8d.web.app"
+        ]
+      }
+    }
+  },
+  "firestore": {
+    "database": "(default)",
+    "location": "asia-south1",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}

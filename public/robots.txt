@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# App / private routes
+Disallow: /admin
+Disallow: /onboarding
+Disallow: /api/
+
+Sitemap: https://gauseva-connect.pages.dev/sitemap.xml

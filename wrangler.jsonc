@@ -1,0 +1,27 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gauseva-connect",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-06-29",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "r2_buckets": [
+    {
+      "binding": "R2_BUCKET",
+      "bucket_name": "gauseva-listings-storage"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "gauseva-db",
+      "database_id": "d8425b01-04fe-4cb8-b5d5-5434a9cc6c8b"
+    }
+  ],
+  "vars": {
+    "R2_PUBLIC_URL_PREFIX": "https://pub-8d3647091b354cb98ad919321a6689fb.r2.dev",
+    "R2_ENDPOINT": "https://c27a67504c0c76725edfbd6d6ff7d61a.r2.cloudflarestorage.com",
+    "R2_BUCKET_NAME": "gauseva-listings-storage"
+  }
+}

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GauSeva Connect - Development Documentation</title>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 40px; color: #333; line-height: 1.6; }
+  h1 { color: #800000; border-bottom: 3px solid #800000; padding-bottom: 10px; }
+  h2 { color: #800000; margin-top: 30px; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+  h3 { color: #555; }
+  code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+  pre { background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
+  ul, ol { margin-left: 20px; }
+  li { margin-bottom: 5px; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+  th { background: #800000; color: white; }
+  .header { text-align: center; margin-bottom: 40px; }
+  .header p { color: #666; }
+  .section { margin-bottom: 30px; page-break-inside: avoid; }
+  @media print { body { padding: 20px; } .no-print { display: none; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>GauSeva Connect - Complete Development Documentation</h1>
+  <p><strong>Date:</strong> July 1, 2026 | <strong>Project:</strong> gauseva-connect.pages.dev | <strong>Developer:</strong> MiMo Code Agent</p>
+  <button class="no-print" onclick="window.print()" style="padding: 10px 20px; background: #800000; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Save as PDF</button>
+</div>
+
+<h2>1. Authentication System</h2>
+<div class="section">
+<h3>Migration from Clerk to Firebase Auth</h3>
+<ul>
+<li>Removed Clerk authentication completely</li>
+<li>Implemented Firebase Auth with email/password</li>
+<li>Email verification required during sign-up</li>
+<li>Password reset via "Forgot Password" link on sign-in page</li>
+<li>Sign-in goes directly to home page</li>
+<li>Sign-up flow: Email/Password → Email Verification → Onboarding</li>
+</ul>
+<h3>Files Modified</h3>
+<ul>
+<li><code>src/main.tsx</code> - Removed ClerkProvider, added lazy-loaded routes</li>
+<li><code>src/lib/firebase.ts</code> - Firebase Auth initialization</li>
+<li><code>src/hooks/useAuth.ts</code> - Firebase onAuthStateChanged hook</li>
+<li><code>src/components/SignInPage.tsx</code> - Custom sign-in with forgot password</li>
+<li><code>src/components/SignUpPage.tsx</code> - Custom sign-up with email verification</li>
+<li><code>src/components/AuthModal.tsx</code> - Modal version of auth forms</li>
+</ul>
+</div>
+
+<h2>2. Onboarding System</h2>
+<div class="section">
+<h3>Features</h3>
+<ul>
+<li>Full Name, Mobile Number (+91 prefix), Full Address, Pincode, State/UT, City</li>
+<li>All fields compulsory</li>
+<li>Data saved to D1 database via <code>/api/users</code> endpoint</li>
+</ul>
+<h3>Bug Fixes</h3>
+<ul>
+<li>Fixed city being wiped when modal opens (useEffect race condition)</li>
+<li>Fixed onboarding redirect loop</li>
+</ul>
+</div>
+
+<h2>3. Profile Settings</h2>
+<div class="section">
+<ul>
+<li>Edit name, phone, address, pincode, state, city</li>
+<li>Upload profile photo to R2 storage</li>
+<li>Email field (read-only)</li>
+<li>Saves to Firebase Auth and D1 database</li>
+</ul>
+</div>
+
+<h2>4. Support Tickets</h2>
+<div class="section">
+<ul>
+<li>Create tickets with category, subject, description, file attachment</li>
+<li>View, comment, delete tickets</li>
+<li>Admin: view all, change status, reply, delete</li>
+<li>Attachments displayed as images in admin panel</li>
+</ul>
+</div>
+
+<h2>5. Verification System</h2>
+<div class="section">
+<ul>
+<li>Upload ID proof + selfie (stored in R2, max 500KB)</li>
+<li>Admin approve/reject with one click</li>
+<li>Verified users get green shield badge</li>
+</ul>
+</div>
+
+<h2>6. Gaumata Listing</h2>
+<div class="section">
+<ul>
+<li>Simplified form with all compulsory fields</li>
+<li>30+ indigenous cattle breeds</li>
+<li>Image compression to 500KB</li>
+<li>Individual URL per listing (<code>/listing/:id</code>)</li>
+<li>Reviews, comments, report system</li>
+</ul>
+</div>
+
+<h2>7. Admin Panel Features</h2>
+<div class="section">
+<h3>Security</h3>
+<ul>
+<li>Single-session login (one browser at a time)</li>
+<li>Session token stored in D1, validated every 30 seconds</li>
+<li>Audit logging for all actions</li>
+</ul>
+<h3>Management</h3>
+<ul>
+<li>Edit, feature, bulk delete listings</li>
+<li>Ban/unban users, verify/revoke, delete users</li>
+<li>Ticket management with attachments</li>
+<li>Verification approve/reject</li>
+<li>Reports, contacts, reviews management</li>
+<li>Analytics dashboard</li>
+<li>Site banner, maintenance mode</li>
+<li>Data export (JSON/CSV)</li>
+</ul>
+</div>
+
+<h2>8. Database Schema (D1)</h2>
+<div class="section">
+<table>
+<tr><th>Table</th><th>Columns</th></tr>
+<tr><td>listings</td><td>id, data (JSON)</td></tr>
+<tr><td>users</td><td>id, data (JSON)</td></tr>
+<tr><td>tickets</td><td>id, userId, data (JSON)</td></tr>
+<tr><td>site_settings</td><td>key, value (JSON)</td></tr>
+<tr><td>reports</td><td>id, data (JSON)</td></tr>
+<tr><td>audit_log</td><td>id, data (JSON)</td></tr>
+<tr><td>contacts</td><td>id, data (JSON)</td></tr>
+<tr><td>reviews</td><td>id, listingId, userId, data (JSON)</td></tr>
+<tr><td>comments</td><td>id, listingId, userId, data (JSON)</td></tr>
+<tr><td>verificationRequests</td><td>id, data (JSON)</td></tr>
+</table>
+</div>
+
+<h2>9. API Endpoints (Pages Functions)</h2>
+<div class="section">
+<table>
+<tr><th>Endpoint</th><th>Methods</th><th>Purpose</th></tr>
+<tr><td>/api/data</td><td>GET</td><td>All data from all tables</td></tr>
+<tr><td>/api/users</td><td>POST, DELETE</td><td>Create/update/delete user</td></tr>
+<tr><td>/api/users/[id]</td><td>GET, DELETE</td><td>Get/delete specific user</td></tr>
+<tr><td>/api/listings</td><td>GET</td><td>Paginated listings with filters</td></tr>
+<tr><td>/api/upload</td><td>POST</td><td>Direct R2 upload</td></tr>
+<tr><td>/api/tickets</td><td>POST</td><td>Create ticket</td></tr>
+<tr><td>/api/tickets/[id]</td><td>PUT, DELETE</td><td>Update/delete ticket</td></tr>
+<tr><td>/api/settings</td><td>GET, PUT</td><td>Site settings</td></tr>
+<tr><td>/api/admin-session</td><td>POST, GET, DELETE</td><td>Admin login/session</td></tr>
+<tr><td>/api/audit-log</td><td>GET, POST</td><td>Audit entries</td></tr>
+<tr><td>/api/reports</td><td>GET, POST</td><td>User reports</td></tr>
+<tr><td>/api/contacts</td><td>GET, POST</td><td>Contact form</td></tr>
+<tr><td>/api/reviews</td><td>GET, POST</td><td>Listing reviews</td></tr>
+<tr><td>/api/comments</td><td>GET, POST</td><td>Listing comments</td></tr>
+</table>
+</div>
+
+<h2>10. Performance Optimizations</h2>
+<div class="section">
+<ul>
+<li><strong>Code Splitting:</strong> Routes lazy-loaded, main bundle 670KB → 185KB gzipped</li>
+<li><strong>Image Lazy Loading:</strong> All listing images load on viewport entry</li>
+<li><strong>Debounced Search:</strong> 400ms delay before API call</li>
+<li><strong>Server-side Pagination:</strong> 20 listings per request</li>
+<li><strong>Database Indexes:</strong> On type, status, price, postedAt</li>
+<li><strong>Preconnect Hints:</strong> Firebase, R2, fonts pre-connected</li>
+</ul>
+</div>
+
+<h2>11. Security Headers</h2>
+<div class="section">
+<ul>
+<li>X-Content-Type-Options: nosniff</li>
+<li>X-Frame-Options: DENY</li>
+<li>X-XSS-Protection: 1; mode=block</li>
+<li>Referrer-Policy: strict-origin-when-cross-origin</li>
+<li>Permissions-Policy: camera=(), microphone=(), geolocation=()</li>
+<li>Strict-Transport-Security (HSTS)</li>
+</ul>
+</div>
+
+<h2>12. Deployment</h2>
+<div class="section">
+<ul>
+<li><strong>Platform:</strong> Cloudflare Pages</li>
+<li><strong>Domain:</strong> gauseva-connect.pages.dev</li>
+<li><strong>Build:</strong> <code>npx vite build</code></li>
+<li><strong>Deploy:</strong> <code>npx wrangler pages deploy ./dist --project-name=gauseva-connect</code></li>
+<li><strong>Wrangler:</strong> 4.106.0</li>
+</ul>
+</div>
+
+<h2>13. Environment Variables</h2>
+<div class="section">
+<h3>Frontend (VITE_ prefixed)</h3>
+<ul>
+<li>VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, VITE_FIREBASE_PROJECT_ID</li>
+<li>VITE_FIREBASE_STORAGE_BUCKET, VITE_FIREBASE_MESSAGING_SENDER_ID, VITE_FIREBASE_APP_ID</li>
+<li>VITE_BACKEND_URL (empty for same domain)</li>
+</ul>
+<h3>Backend (Secrets)</h3>
+<ul>
+<li>ADMIN_USER, ADMIN_PASS</li>
+<li>R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY</li>
+</ul>
+<h3>Backend (Vars)</h3>
+<ul>
+<li>R2_PUBLIC_URL_PREFIX, R2_ENDPOINT, R2_BUCKET_NAME</li>
+</ul>
+</div>
+
+<hr>
+<p style="text-align: center; color: #999; font-size: 12px;">Auto-generated by MiMo Code Agent | July 1, 2026</p>
+</body>
+</html>

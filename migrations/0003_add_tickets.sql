@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS tickets (id TEXT PRIMARY KEY, userId TEXT, data TEXT);
